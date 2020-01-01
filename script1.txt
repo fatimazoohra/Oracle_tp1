@@ -1,0 +1,81 @@
+--4. Ecrire en SQL les requêtes suivantes: 
+--a. Tous les détails sur tous les employés 
+SELECT * FROM employees
+--b. Le nom, prénom et salair de chaque employé 
+SELECT FIRST_NAME,LAST_NAME,SALARY FROM employees
+--c. Le nom, prénom et salair de chaque employé ayant un salair > 20000 
+SELECT FIRST_NAME,LAST_NAME,SALARY FROM employees where SALARY>20000
+--d. Le nom, prénom et salair de chaque employé ayant un salair entre 6000 et 20000 
+SELECT FIRST_NAME,LAST_NAME,SALARY FROM employees where SALARY BETWEEN 6000 AND 20000
+--e. Le nom, prénom et salair des employés du département 200, 201, 203 et 121 ayant un entre 6000 et 20000 
+SELECT FIRST_NAME,LAST_NAME,SALARY,DEPARTMENT_ID  FROM employees 
+WHERE  DEPARTMENT_ID IN (60,30,100) 
+    and (SALARY BETWEEN 6000 AND 20000)
+--f. Le nom, prénom et salair des employés des départements dont le nom commence par un E 
+SELECT FIRST_NAME,LAST_NAME,SALARY
+FROM employees E, DEPARTMENTS D
+where E.DEPARTMENT_ID =D.DEPARTMENT_ID 
+    AND D.DEPARTMENT_NAME LIKE 'E%'
+--g. Le nom, prénom et salair des employés dont le JOB n’est pas 'IT_PROG', ou 'AD_VP' 
+SELECT FIRST_NAME,LAST_NAME,SALARY, JOB_TITLE
+FROM employees E,JOBS J
+where E.JOB_ID =J.JOB_ID 
+ AND JOB_TITLE   not in ('IT_PROG','AD_VP' )
+
+--h. Les ID des departements (sans redondance ) 
+SELECT Distinct(DEPARTMENT_ID) FROM employees
+
+--i. Les salaires dans chaque département 
+SELECT DEPARTMENT_ID,SALARY 
+from employees
+order by DEPARTMENT_ID asc
+
+--5. Ecrire en SQL les requêtes suivantes:
+
+--a. Les salaires, le salaire augmenté de 15% dans chaque département :
+select DEPARTMENT_ID, SALARY, SALARY+(SALARY*0.15)  as salaire_augmentee
+from employees
+order by DEPARTMENT_ID 
+
+--b. Les salaires, le salaire augmenté de 15% et la différence dans chaque département 
+select DEPARTMENT_ID, SALARY, SALARY+(SALARY*0.15) as salaire_augmentee , (SALARY*0.15) as difference
+from employees
+order by DEPARTMENT_ID 
+
+--c. Les salaires dans un ordre décroissant dans chaque département dans un ordre croissant
+select SALARY, DEPARTMENT_ID
+from employees
+order by SALARY desc, DEPARTMENT_ID asc
+
+--6. Ecrire en SQL les requêtes suivantes en utilisant des fonctions: 
+--a. Les 6 premiers caractere des JOBS
+select SUBSTR(JOB_TITLE,1,6)
+from JOBS
+
+--b. Le nom, prénom et nombre de caractère du nom de chaque employé 
+SELECT FIRST_NAME,LAST_NAME, LENGTH(LAST_NAME) as nbrCaractereNom
+FROM employees
+
+--c. Le prénom nom(dans un seul champs) et salaire de chaque employé 
+SELECT concat(FIRST_NAME,LAST_NAME) as fullname, salary
+FROM employees
+
+--d. Le prénom nom et salaire de chaque employé (sous forme: Nom: … Prenom:… Salaire:...) 
+
+--e. Le nom en majuscule , prénom en minuscule de chaque employé 
+SELECT Upper(LAST_NAME)  as lastname,lower(FIRST_NAME) as firstname 
+FROM employees
+
+--f. Le nom et prénom des employés només ‘david’ 
+SELECT FIRST_NAME,LAST_NAME
+FROM employees
+WHERE FIRST_NAME LIKE 'David'
+
+--g. Le nom , prénom et salaire (sous forme 20,000 au lieu de 20000 ) des employés 
+
+select first_name,last_name, TO_CHAR(salary,'$99,999')
+from employees
+
+--h. Le nom , prénom et salaire (sous forme 20,000$ au lieu de 20000 ) des employés (la devise dépend des paramètres)
+select first_name,last_name, TO_CHAR(salary,'$99,999L')
+from employees
